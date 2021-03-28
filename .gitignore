@@ -8,6 +8,7 @@ client/.pnp.js
 
 # testing
 client/coverage
+testing
 
 # production
 client/build

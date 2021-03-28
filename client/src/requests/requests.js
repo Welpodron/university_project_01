@@ -20,4 +20,18 @@ const getOrders = (amount = 20, page = 0) =>
     .catch((err) => renderError(err))
     .catch((err) => renderError(err));
 
-export { getEmployees, getOrders };
+const getStatistics = () =>
+  fetch(`http://localhost:8080/statistics`)
+    .then((res) => (!res.ok ? renderError(res) : res.json()))
+    .then((json) => json)
+    .catch((err) => renderError(err))
+    .catch((err) => renderError(err));
+
+const getEmployee = (id) =>
+  fetch(`http://localhost:8080/employees?id=${id}`)
+    .then((res) => (!res.ok ? renderError(res) : res.json()))
+    .then((json) => json)
+    .catch((err) => renderError(err))
+    .catch((err) => renderError(err));
+
+export { getEmployees, getOrders, getStatistics, getEmployee };

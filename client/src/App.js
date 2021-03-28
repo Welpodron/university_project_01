@@ -13,6 +13,8 @@ import userContext from "./context/user";
 import { check } from "./requests/auth";
 import EmployeePage from "./routes/EmployeePage";
 
+import DeleteEmployee from "./routes/DeleteEmployee";
+
 function App() {
   const [user, setUser] = useState(null);
 
@@ -33,6 +35,7 @@ function App() {
             <Link to="/orders">Приказы</Link>
             <Link to="/statistics">Статистика</Link>
             <Link to="/login">Логин</Link>
+            <Link to="/test">smth</Link>
             <Switch>
               <Route exact path="/employees">
                 <EmployeesPage />
@@ -45,6 +48,9 @@ function App() {
               </Route>
               <Route path="/login">
                 <Login />
+              </Route>
+              <Route path="/test">
+                <DeleteEmployee />
               </Route>
               <Route path="/employees/:Id">
                 <EmployeePage />

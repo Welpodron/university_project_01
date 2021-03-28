@@ -34,4 +34,11 @@ const getEmployee = (id) =>
     .catch((err) => renderError(err))
     .catch((err) => renderError(err));
 
-export { getEmployees, getOrders, getStatistics, getEmployee };
+const tryToFind = (q, exact = 0) =>
+  fetch(`http://localhost:8080/api/search?q=${q}&exact=${exact}`)
+    .then((res) => (!res.ok ? renderError(res) : res.json()))
+    .then((json) => json)
+    .catch((err) => renderError(err))
+    .catch((err) => renderError(err));
+
+export { getEmployees, getOrders, getStatistics, getEmployee, tryToFind };

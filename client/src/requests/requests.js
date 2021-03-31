@@ -1,5 +1,15 @@
 import renderError from "../components/errors/renderError";
 
+const OPTIONS_SENSITIVE = {
+  method: "POST",
+  credentials: "include",
+};
+
+const OPTIONS_DELETE = {
+  method: "DELETE",
+  credentials: "include",
+};
+
 const OPTIONS_CHECK = {
   credentials: "include",
 };
@@ -41,4 +51,21 @@ const tryToFind = (q, exact = 0) =>
     .catch((err) => renderError(err))
     .catch((err) => renderError(err));
 
-export { getEmployees, getOrders, getStatistics, getEmployee, tryToFind };
+const deleteEmployees = (data) =>
+  fetch(`http://localhost:8080/employees`, {
+    ...OPTIONS_DELETE,
+    body: data,
+  })
+    .then((res) => (!res.ok ? renderError(res) : res.json()))
+    .then((json) => json)
+    .catch((err) => renderError(err))
+    .catch((err) => renderError(err));
+
+export {
+  getEmployees,
+  getOrders,
+  getStatistics,
+  getEmployee,
+  tryToFind,
+  deleteEmployees,
+};

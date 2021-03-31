@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { tryToFind } from "../requests/requests";
+import { tryToFind, deleteEmployees } from "../requests/requests";
 
 const DeleteEmployee = () => {
   const [search, setSearch] = useState("");
@@ -31,7 +31,7 @@ const DeleteEmployee = () => {
             {
               ...options.find((el) => el.Id.toString() === evt.target.value),
               Reason: "Увольнение сотрудника по собственному желанию",
-              ReasonCategory: "",
+              ReasonCategory: "5",
             },
           ];
         } else {
@@ -42,7 +42,7 @@ const DeleteEmployee = () => {
           {
             ...options.find((el) => el.Id.toString() === evt.target.value),
             Reason: "Увольнение сотрудника по собственному желанию",
-            ReasonCategory: "",
+            ReasonCategory: "5",
           },
         ];
       }
@@ -63,9 +63,21 @@ const DeleteEmployee = () => {
 
     const temp = [...checked];
 
-    temp[elIndex] = { ...temp[elIndex], Reason: evt.target.value };
+    evt.target.id.split("_")[0] === "Reason"
+      ? (temp[elIndex] = { ...temp[elIndex], Reason: evt.target.value })
+      : (temp[elIndex] = {
+          ...temp[elIndex],
+          ReasonCategory: evt.target.value,
+        });
     setChecked(temp);
     // Необходимо найти в массиве checked соответсвующий
+  };
+
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+    deleteEmployees(new FormData(evt.target))
+      .then((d) => console.log(d))
+      .catch();
   };
 
   return (
@@ -107,7 +119,7 @@ const DeleteEmployee = () => {
             </div>
           )}
           {checked && checked.length > 0 && (
-            <form>
+            <form onSubmit={handleSubmit}>
               <h2>Данные выбранных сотрудников:</h2>
               <p>
                 Пожалуйста, перед увольнением сотрудников убедитесь в
@@ -123,11 +135,9 @@ const DeleteEmployee = () => {
                     <p>{`Имя: ${el.FirstName}`}</p>
                     {el.MiddleName && <p>{`Отчество: ${el.MiddleName}`}</p>}
                     <p>{`Серия и номер паспорта: ${el.PassportSerial} ${el.PassportNumber}`}</p>
-                    <p>{`Принят на работу:`}</p>
-                    <p>{`Согласно приказу:`}</p>
-                    <p>{`Должность:`}</p>
-                    <p>{`Отдел:`}</p>
-                    <p>{`Зарплата:`}</p>
+                    <p>{`Должность: ${el.Job}`}</p>
+                    <p>{`Отдел: ${el.Dep}`}</p>
+                    <p>{`Зарплата: ${el.Payment}`}</p>
                     <div>
                       <label>Причина увольнения:</label>
                       <textarea
@@ -135,18 +145,31 @@ const DeleteEmployee = () => {
                         name={`Reason_${el.Id}`}
                         value={el.Reason}
                         onChange={handleChange}
+                        required
                       ></textarea>
                     </div>
                     <div>
                       <label>Категория приказа:</label>
-                      <select>
-                        <option value="1"></option>
+                      <select
+                        id={`ReasonCategory_${el.Id}`}
+                        name={`ReasonCategory_${el.Id}`}
+                        value={el.ReasonCategory}
+                        onChange={handleChange}
+                        required
+                      >
+                        <option value="5">
+                          Увольнение по инициативе работника
+                        </option>
+                        <option value="6">
+                          Увольнение по инициативе работодателя
+                        </option>
+                        <option value="7">Увольнение по обстоятельствам</option>
                       </select>
                     </div>
                   </li>
                 ))}
               </ul>
-              <button type="button">
+              <button type="submit">
                 Создать приказ об увольнении выбранного(ых) сотрудника(ов)
               </button>
             </form>

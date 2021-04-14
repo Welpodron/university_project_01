@@ -5,6 +5,8 @@ import Login from "./components/auth/Login";
 import EmployeesPage from "./routes/EmployeesPage";
 import OrdersPage from "./routes/OrdersPage";
 import StatisticsPage from "./routes/StatisticsPage";
+import VacationsPage from "./routes/VacationsPage";
+import CreateVacation from "./routes/CreateVacation";
 
 import renderError from "./components/errors/renderError";
 
@@ -35,6 +37,8 @@ function App() {
             <Link to="/orders">Приказы</Link>
             <Link to="/statistics">Статистика</Link>
             <Link to="/login">Логин</Link>
+            <Link to="/vacations">Таблица отпусков</Link>
+            <Link to="/createVacation">Создать отпуск</Link>
             <Link to="/test">smth</Link>
             <Switch>
               <Route exact path="/employees">
@@ -51,6 +55,12 @@ function App() {
               </Route>
               <Route path="/test">
                 <DeleteEmployee />
+              </Route>
+              <Route path="/createVacation">
+                <CreateVacation />
+              </Route>
+              <Route path="/vacations">
+                <VacationsPage />
               </Route>
               <Route path="/employees/:Id">
                 <EmployeePage />

@@ -51,6 +51,23 @@ const tryToFind = (q, exact = 0) =>
     .catch((err) => renderError(err))
     .catch((err) => renderError(err));
 
+const getVacations = () =>
+  fetch(`http://localhost:8080/vacations`)
+    .then((res) => (!res.ok ? renderError(res) : res.json()))
+    .then((json) => json)
+    .catch((err) => renderError(err))
+    .catch((err) => renderError(err));
+
+const createVacations = (data) =>
+  fetch(`http://localhost:8080/vacations`, {
+    ...OPTIONS_SENSITIVE,
+    body: data,
+  })
+    .then((res) => (!res.ok ? renderError(res) : res.json()))
+    .then((json) => json)
+    .catch((err) => renderError(err))
+    .catch((err) => renderError(err));
+
 const deleteEmployees = (data) =>
   fetch(`http://localhost:8080/employees`, {
     ...OPTIONS_DELETE,
@@ -68,4 +85,6 @@ export {
   getEmployee,
   tryToFind,
   deleteEmployees,
+  getVacations,
+  createVacations,
 };

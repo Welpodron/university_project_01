@@ -15,6 +15,8 @@ const InputGroup = (props) => {
     min,
     max,
     step,
+    disabled,
+    readOnly,
   } = props.data;
 
   return (
@@ -38,6 +40,8 @@ const InputGroup = (props) => {
         max={max}
         step={step}
         value={value}
+        disabled={disabled}
+        readOnly={readOnly}
       />
       {touched && errors && <p className="invalid-feedback">{errors}</p>}
       {desc && <p className="form-text mb-0 mt-2">{desc}</p>}

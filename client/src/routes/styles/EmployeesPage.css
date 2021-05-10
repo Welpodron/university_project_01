@@ -1,0 +1,38 @@
+.form-search {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+}
+
+.from-drop-cont {
+  position: relative;
+  z-index: 1;
+}
+
+.form-drop {
+  position: absolute;
+  right: 0;
+  min-width: 320px;
+  top: calc(100% + 10px);
+  z-index: 5;
+}
+
+.form-filters {
+  display: grid;
+  margin: 0;
+  gap: 10px;
+  padding: 30px;
+  transition: all 0.5s ease;
+  list-style: none;
+}
+
+.form-search-icon {
+  display: grid;
+  place-items: center;
+  padding: 10px;
+  border: 1px solid #ced4da;
+}
+
+.form-search-search {
+  border-right: none !important;
+  max-width: 60%;
+}

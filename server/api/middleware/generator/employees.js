@@ -113,8 +113,7 @@ const setEmployee = (req, res) => {
               const employeeId = result.recordset[0].Id;
               const setOrder = new mssql.Request(connection);
               setOrder
-                .input("categoryId", mssql.Int, 1)
-                .input("status", mssql.NVarChar(25), "Подтвержден")
+                .input("CategoryId", mssql.Int, 1)
                 .execute("setOrder", (err, result) => {
                   if (!err) {
                     const orderId = result.recordset[0].Id;

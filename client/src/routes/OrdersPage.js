@@ -14,7 +14,7 @@ const OrdersPage = () => {
   const [orders, setOrders] = useState(null);
 
   useEffect(() => {
-    if (!user.role.includes("STAFF_")) return;
+    // if (!user.role.includes("STAFF_")) return;
     getOrders(20)
       .then((d) => setOrders(d))
       .catch((err) => renderError(err));

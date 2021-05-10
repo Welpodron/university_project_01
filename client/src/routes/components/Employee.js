@@ -8,10 +8,25 @@ const Employee = (props) => {
   return (
     <>
       <Link to={`/employees/${Id}`}>
-        <li>
-          <p>{Department}</p>
-          <p>{`${LastName} ${FirstName} ${MiddleName || ""}`}</p>
-          <p>{Job}</p>
+        <li className="employee shadow rounded p-4">
+          <div>
+            <span className="badge bg-secondary">{Id}</span>
+          </div>
+          <ul className="badges">
+            <li className="badges-badge shadow-sm rounded fw-light text-muted">
+              {Department}
+            </li>
+          </ul>
+          <div className="">
+            <h5 className="">{`${LastName} ${FirstName} ${
+              MiddleName || ""
+            }`}</h5>
+          </div>
+          <ul className="badges">
+            <li className="badges-badge shadow-sm rounded fw-light text-muted">
+              {Job}
+            </li>
+          </ul>
         </li>
       </Link>
     </>

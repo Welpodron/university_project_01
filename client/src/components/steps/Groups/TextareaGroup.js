@@ -11,6 +11,8 @@ const TextareaGroup = (props) => {
     required,
     touched,
     value,
+    disabled,
+    readOnly,
   } = props.data;
 
   return (
@@ -31,6 +33,8 @@ const TextareaGroup = (props) => {
         placeholder={placeholder}
         required={required}
         value={value}
+        disabled={disabled}
+        readOnly={readOnly}
       />
       {touched && errors && <p className="invalid-feedback">{errors}</p>}
       {desc && <p className="form-text mb-0 mt-2">{desc}</p>}

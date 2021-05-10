@@ -6,6 +6,8 @@ import { getEmployees } from "../requests/requests";
 
 import Employees from "./components/Employees";
 
+import "./styles/EmployeesPage.css";
+
 import {
   numSort,
   stringSort,
@@ -96,30 +98,81 @@ const EmployeesPage = () => {
   return (
     <div>
       {employees && options && optionsActive && (
-        <form>
-          <input type="text" onChange={(e) => setQ(e.target.value)} value={q} />
-          {options.map((opt, i) => (
-            <label key={i}>
-              <input
-                type="checkbox"
-                checked={optionsActive.includes(opt)}
-                onChange={(e) => {
-                  const checked = optionsActive.includes(opt);
-                  setOptionsActive((prev) =>
-                    checked
-                      ? prev.filter((option) => option !== opt)
-                      : [...prev, opt]
-                  );
-                }}
-              />
-              {translate(opt)}
-            </label>
-          ))}
+        <form className="p-5">
+          <div className="form-search input-group">
+            <input
+              className="form-control form-search-search"
+              type="search"
+              placeholder="Поиск сотрудников"
+              onChange={(e) => setQ(e.target.value)}
+              value={q}
+            />
+            <div className="form-search-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-search"
+                viewBox="0 0 16 16"
+              >
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+              </svg>
+            </div>
+            <div className="from-drop-cont">
+              <button
+                class="btn btn-primary"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseExample"
+                aria-expanded="false"
+                aria-controls="collapseExample"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-funnel-fill"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z" />
+                </svg>
+              </button>
+              <div class="collapse form-drop" id="collapseExample">
+                <ul class="form-filters shadow rounded">
+                  {options.map((opt, i) => (
+                    <li className="">
+                      <div className="form-check">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          checked={optionsActive.includes(opt)}
+                          onChange={(e) => {
+                            const checked = optionsActive.includes(opt);
+                            setOptionsActive((prev) =>
+                              checked
+                                ? prev.filter((option) => option !== opt)
+                                : [...prev, opt]
+                            );
+                          }}
+                        />
+                        <label className="form-check-label" key={i}>
+                          {translate(opt)}
+                        </label>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
           <ul>
             {options.map((opt, i) => (
               <li>
                 <label>
                   <input
+                    className="form-check-input"
                     type="checkbox"
                     checked={sortOptionsActive.some((el) => el.field === opt)}
                     onChange={(e) => {

@@ -1,0 +1,29 @@
+.vacations-table {
+  display: grid;
+  gap: 50px;
+}
+
+.vacations-table-head {
+  display: grid;
+}
+
+.vacations-table-body {
+  display: grid;
+  gap: 40px;
+}
+
+.vacations-table-head-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.vacations-table-body-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.vacations-table-cell {
+  display: grid;
+  place-items: center;
+  text-align: center;
+}

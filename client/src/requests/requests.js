@@ -10,9 +10,35 @@ const OPTIONS_DELETE = {
   credentials: "include",
 };
 
+const OPTIONS_MOVE = {
+  method: "PATCH",
+  credentials: "include",
+};
+
 const OPTIONS_CHECK = {
   credentials: "include",
 };
+
+const getDepartments = () =>
+  fetch(`http://localhost:8080/api/departments`)
+    .then((res) => (!res.ok ? renderError(res) : res.json()))
+    .then((json) => json)
+    .catch((err) => renderError(err))
+    .catch((err) => renderError(err));
+
+const getVacationsTypes = () =>
+  fetch(`http://localhost:8080/api/vacationsTypes`)
+    .then((res) => (!res.ok ? renderError(res) : res.json()))
+    .then((json) => json)
+    .catch((err) => renderError(err))
+    .catch((err) => renderError(err));
+
+const getJobs = () =>
+  fetch(`http://localhost:8080/api/jobs`)
+    .then((res) => (!res.ok ? renderError(res) : res.json()))
+    .then((json) => json)
+    .catch((err) => renderError(err))
+    .catch((err) => renderError(err));
 
 const getEmployees = (amount = 20, page = 0) =>
   fetch(`http://localhost:8080/employees?amount=${amount}&page=${page}`)
@@ -78,13 +104,27 @@ const deleteEmployees = (data) =>
     .catch((err) => renderError(err))
     .catch((err) => renderError(err));
 
+const moveEmployees = (data) =>
+  fetch(`http://localhost:8080/employees`, {
+    ...OPTIONS_MOVE,
+    body: data,
+  })
+    .then((res) => (!res.ok ? renderError(res) : res.json()))
+    .then((json) => json)
+    .catch((err) => renderError(err))
+    .catch((err) => renderError(err));
+
 export {
   getEmployees,
   getOrders,
   getStatistics,
   getEmployee,
+  getDepartments,
+  getJobs,
   tryToFind,
   deleteEmployees,
   getVacations,
   createVacations,
+  moveEmployees,
+  getVacationsTypes,
 };

@@ -12,6 +12,8 @@ const SelectGroup = (props) => {
     touched,
     value,
     options,
+    disabled,
+    readOnly,
   } = props.data;
 
   // [{value: "", placeholder: ""}, {}] - options
@@ -32,6 +34,8 @@ const SelectGroup = (props) => {
         onBlur={handleBlur}
         onChange={handleChange}
         value={value}
+        disabled={disabled}
+        readOnly={readOnly}
       >
         <option value="DEFAULT" disabled={true}>
           {placeholder}

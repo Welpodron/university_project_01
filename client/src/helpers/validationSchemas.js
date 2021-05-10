@@ -94,12 +94,10 @@ const createEmployeeSchema = Yup.object().shape({
       }
     ),
   passportFrom: Yup.string().required("Обязательное поле"),
-  contactPhone: Yup.string()
-    .matches(
-      /^7[0-9\-\+]{10}$/,
-      "Формат введенного телефона не соответствует требуемому"
-    )
-    .required("Обязательное поле"),
+  contactPhone: Yup.string().matches(
+    /^7[0-9\-\+]{10}$/,
+    "Формат введенного телефона не соответствует требуемому"
+  ),
   // Блок с кодом временно отключен до подтверждения валерии александровны
   // .test("is-unique", "Телефон занят другим сотрудником", async (value) => {
   //   if (value && value.match(/^7[0-9\-\+]{10}$/)) {
@@ -110,9 +108,11 @@ const createEmployeeSchema = Yup.object().shape({
   //     return !(json.length > 0);
   //   }
   // }),
-  contactEmail: Yup.string().email(
-    "Введенный почтовый адрес на валиден, возможно вы забыли указать @, а также домен почтового ящика"
-  ),
+  contactEmail: Yup.string()
+    .email(
+      "Введенный почтовый адрес на валиден, возможно вы забыли указать @, а также домен почтового ящика"
+    )
+    .required("Обязательное поле"),
   contactAddress: Yup.string().required("Обязательное поле"),
   jobId: Yup.number()
     .typeError("Обязательное поле")

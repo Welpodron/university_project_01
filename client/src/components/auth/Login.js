@@ -29,21 +29,40 @@ const Login = () => {
     >
       {({ values, handleChange, handleSubmit, isSubmitting }) => (
         <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="login"
-            onChange={handleChange}
-            value={values.login}
-          />
-          <input
-            type="password"
-            name="password"
-            onChange={handleChange}
-            value={values.password}
-          />
-          <button type="submit" disabled={isSubmitting}>
-            Submit
+          <h1 class="h3 mb-3 fw-normal">Авторизация</h1>
+          <div class="form-floating">
+            <input
+              type="text"
+              class="form-control"
+              name="login"
+              id="login"
+              onChange={handleChange}
+              value={values.login}
+              placeholder="Логин"
+            />
+            <label for="login">Логин</label>
+          </div>
+          <div class="form-floating">
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              onChange={handleChange}
+              value={values.password}
+              placeholder="Пароль"
+            />
+            <label for="password">Пароль</label>
+          </div>
+          <button
+            class="w-100 btn btn-lg btn-primary"
+            type="submit"
+            disabled={isSubmitting}
+          >
+            Войти
           </button>
+          <p class="mt-5 mb-3 text-muted">
+            2021 made by <a href="https://vk.com/welpodron">@welpodron</a>
+          </p>
         </form>
       )}
     </Formik>

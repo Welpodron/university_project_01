@@ -1,0 +1,20 @@
+.selected-employees-list {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+  grid-auto-rows: 1fr;
+  list-style: none;
+}
+
+.buttons-list {
+  list-style: none;
+  grid-auto-rows: 1fr;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, 150px);
+}
+
+.buttons-list button {
+  width: 100%;
+}

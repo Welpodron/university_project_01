@@ -1,7 +1,7 @@
 import React from "react";
 
 const Step5 = (props) => {
-  const { errors, touched } = props.data.formik;
+  const { errors, touched, isSubmitting } = props.data.formik;
 
   const { setStep } = props.data;
 
@@ -29,7 +29,9 @@ const Step5 = (props) => {
           type="submit"
           className="btn btn-danger"
           disabled={
-            !Object.keys(touched).length > 0 || Object.keys(errors).length !== 0
+            !Object.keys(touched).length > 0 ||
+            Object.keys(errors).length !== 0 ||
+            isSubmitting
           }
         >
           Добавить сотрудника

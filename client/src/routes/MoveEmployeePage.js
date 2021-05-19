@@ -23,6 +23,7 @@ const MoveEmployees = () => {
   const [departments, setDepartments] = useState([]); // Отделы
   const [jobs, setJobs] = useState([]); // Должности
   const [orders, setOrders] = useState([]);
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     if (user.role !== "STAFF_SPECIALIST" && user.role !== "STAFF_EDITOR") {
@@ -120,7 +121,11 @@ const MoveEmployees = () => {
   const handleSubmit = (evt) => {
     evt.preventDefault();
     moveEmployees(new FormData(evt.target))
-      .then((d) => console.log(d))
+      .then((d) => {
+        console.log(d);
+        renderError("Сотрудники успешно переведены");
+        setChecked([]);
+      })
       .catch();
   };
 

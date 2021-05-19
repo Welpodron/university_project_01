@@ -4,13 +4,8 @@ import InputGroup from "./Groups/InputGroup";
 import TextareaGroup from "./Groups/TextareaGroup";
 
 const Step3 = (props) => {
-  const {
-    errors,
-    handleBlur,
-    handleChange,
-    touched,
-    values,
-  } = props.data.formik;
+  const { errors, handleBlur, handleChange, touched, values } =
+    props.data.formik;
 
   const { setStep } = props.data;
 
@@ -23,15 +18,13 @@ const Step3 = (props) => {
       <div className="mb-4">
         <InputGroup
           data={{
-            desc:
-              "Номер телефона использует следующий формат: 7XXXXXXXXXX Например: 74957771212",
+            desc: "Номер телефона использует следующий формат: 7XXXXXXXXXX Например: 74957771212",
             errors: errors.contactPhone,
             handleBlur,
             handleChange,
             customBlur: true,
             name: "contactPhone",
             placeholder: "Введите номер телефона сотрудника",
-            required: true,
             touched: touched.contactPhone,
             type: "tel",
             value: values.contactPhone,
@@ -49,6 +42,7 @@ const Step3 = (props) => {
             touched: touched.contactEmail,
             type: "email",
             value: values.contactEmail,
+            required: true,
           }}
         >
           Электронная почта

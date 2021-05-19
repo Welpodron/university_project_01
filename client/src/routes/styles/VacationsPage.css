@@ -1,6 +1,6 @@
 .vacations-table {
   display: grid;
-  gap: 50px;
+  gap: 5px;
 }
 
 .vacations-table-head {
@@ -9,7 +9,7 @@
 
 .vacations-table-body {
   display: grid;
-  gap: 40px;
+  gap: 4px;
 }
 
 .vacations-table-head-row {

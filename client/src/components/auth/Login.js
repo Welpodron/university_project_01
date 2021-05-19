@@ -6,6 +6,8 @@ import { Formik } from "formik";
 
 import { login as loginRequest } from "../../requests/auth";
 
+import renderError from "../errors/renderError";
+
 import userContext from "../../context/user";
 
 import "./style/Login.css";
@@ -27,6 +29,7 @@ const Login = () => {
             console.log(d);
             setUser({ role: d.role, employeeId: d.employeeId });
             setSubmitting(false);
+            renderError("Пользователь успешно авторизован");
           })
           .catch((_) => {
             setSubmitting(false);

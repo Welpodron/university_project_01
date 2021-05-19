@@ -82,7 +82,17 @@ const setEmployee = (req, res) => {
                                 .input("EmployeeId", mssql.Int, employeeId)
                                 .input("Login", mssql.NVarChar(50), rndLogin)
                                 .input("Password", mssql.NVarChar(150), hash)
-                                .input("Role", mssql.NVarChar(50), "REPLACE_ME")
+                                .input(
+                                  "Role",
+                                  mssql.NVarChar(50),
+                                  jobId === "1"
+                                    ? "STAFF_SPECIALIST"
+                                    : jobId === "2"
+                                    ? "STAFF_EDITOR"
+                                    : jobId === "3"
+                                    ? "STAFF_VACATIONS_PLANNER"
+                                    : "DEFAULT"
+                                )
                                 .execute("createUser", (err, result) => {
                                   if (!err) {
                                     const mailOptions = {

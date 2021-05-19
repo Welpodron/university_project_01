@@ -25,17 +25,10 @@ const CreateVacation = () => {
   const [vacationsTypes, setVacationsTypes] = useState([]);
 
   useEffect(() => {
-    check()
-      .then((d) => {
-        d ? setUser({ role: d.role }) : setUser({ role: "GUEST" });
-      })
-      .catch((err) => renderError(err));
-
     if (
       user.role !== "STAFF_SPECIALIST" &&
       user.role !== "STAFF_VACATIONS_PLANNER"
     ) {
-      window.location.href = "http://localhost:3000/login";
       return;
     }
     getVacationsTypes().then((d) => setVacationsTypes(d));
@@ -230,7 +223,11 @@ const CreateVacation = () => {
       formData.append(`End_${obj.Id}`, obj.End);
     });
     createVacations(formData)
-      .then((d) => console.log(d))
+      .then((d) => {
+        console.log(d);
+        renderError("Отпуска созданы");
+        setChecked([]);
+      })
       .catch();
   };
 

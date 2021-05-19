@@ -2,7 +2,6 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 60px;
-  height: 100vh;
 }
 .statistics-list {
   display: grid;
@@ -12,4 +11,12 @@
   grid-auto-rows: 1fr;
   padding: 0;
   gap: 40px;
+}
+
+.statistics-card {
+  display: grid;
+}
+
+.chart {
+  justify-self: center;
 }

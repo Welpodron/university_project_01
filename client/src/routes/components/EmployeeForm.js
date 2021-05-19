@@ -10,6 +10,8 @@ import { check } from "../../requests/auth";
 import { updateEmployeeSchema } from "../../helpers/validationSchemas";
 import { getEmployee, updateEmployee } from "../../requests/requests";
 
+import renderError from "../../components/errors/renderError";
+
 const EmployeeForm = (props) => {
   const [user, setUser] = useContext(userContext);
   const data = { ...props.data };
@@ -49,6 +51,7 @@ const EmployeeForm = (props) => {
         .then((d) => {
           console.log(d);
           setSubmitting(false);
+          renderError(d.message);
         })
         .catch((_) => {
           setSubmitting(false);

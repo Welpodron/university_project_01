@@ -84,7 +84,11 @@ const DeleteEmployee = () => {
   const handleSubmit = (evt) => {
     evt.preventDefault();
     deleteEmployees(new FormData(evt.target))
-      .then((d) => console.log(d))
+      .then((d) => {
+        console.log(d);
+        renderError("Сотрудники успешно уволены");
+        setChecked([]);
+      })
       .catch();
   };
 

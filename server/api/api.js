@@ -8,10 +8,12 @@ const generatorEmployees = require("./middleware/generator/employees");
 const pages = require("./middleware/pages");
 const vacationsTypes = require("./middleware/vacationsTypes");
 const moveOrders = require("./middleware/moveOrders");
+const emails = require("./middleware/emails");
 
 const search = require("./middleware/search");
 
 router.get("/phones", phones);
+router.get("/emails", emails);
 router.get("/jobs", jobs);
 router.get("/departments", departmens);
 router.get("/pagesAmount", pages);

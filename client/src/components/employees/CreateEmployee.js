@@ -25,7 +25,8 @@ const CreateEmployee = () => {
       depId: "DEFAULT",
     },
     validationSchema: createEmployeeSchema,
-    onSubmit: (values) => {
+    onSubmit: (values, { setSubmitting, resetForm }) => {
+      setSubmitting(true);
       const formData = new FormData();
 
       Object.keys(values).forEach((key) => formData.append(key, values[key]));
@@ -38,8 +39,15 @@ const CreateEmployee = () => {
         .then((res) =>
           res
             .json()
-            .then((data) => console.log(data))
-            .catch((err) => console.log(err))
+            .then((data) => {
+              console.log(data);
+              setSubmitting(false);
+              setStep(5);
+            })
+            .catch((err) => {
+              console.log(err);
+              setSubmitting(false);
+            })
         )
         .catch((err) => console.log(err));
     },

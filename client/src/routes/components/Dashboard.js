@@ -9,10 +9,12 @@ import "./styles/Dashboard.css";
 const Dashboard = ({ data }) => {
   const [options, setOptions] = useState(null);
   const [optionsActive, setOptionsActive] = useState(null);
+  const [totalAmount, setTotalAmount] = useState(0);
 
   useEffect(() => {
     setOptions(data.map((el) => el.Index));
     setOptionsActive(data.map((el) => el.Index));
+    setTotalAmount(data.reduce((acc, cur) => acc + cur.Amount, 0));
   }, []);
 
   const filter = (data) =>
@@ -23,8 +25,8 @@ const Dashboard = ({ data }) => {
       {data && optionsActive && (
         <>
           <ul className="statistics-list">
-            <li className="p-5 shadow-sm rounded bg-white">
-              <p>Популярная должность</p>
+            <li className="p-5 shadow-sm rounded bg-white statistics-card">
+              <p>Наиболее популярная должность</p>
               <h2>
                 {
                   data.find(
@@ -32,8 +34,18 @@ const Dashboard = ({ data }) => {
                   ).Name
                 }
               </h2>
+              <p>Составляет</p>
+              <h2>
+                {`${Math.floor(
+                  (data.find(
+                    (el) => el.Amount === counter("max", data, "Amount")
+                  ).Amount /
+                    totalAmount) *
+                    100
+                )}% от всех сотрудников`}
+              </h2>
             </li>
-            <li className="p-5 shadow-sm rounded bg-white">
+            <li className="p-5 shadow-sm rounded bg-white statistics-card">
               <p>Наименее популярная должность</p>
               <h2>
                 {
@@ -42,8 +54,18 @@ const Dashboard = ({ data }) => {
                   ).Name
                 }
               </h2>
+              <p>Составляет</p>
+              <h2>
+                {`${Math.floor(
+                  (data.find(
+                    (el) => el.Amount === counter("min", data, "Amount")
+                  ).Amount /
+                    totalAmount) *
+                    100
+                )}% от всех сотрудников`}
+              </h2>
             </li>
-            <li className="p-5 shadow-sm rounded bg-white">
+            <li className="p-5 shadow-sm rounded bg-white statistics-card">
               <p>Наиболее высокооплачиваемая должность</p>
               <h2>
                 {
@@ -52,8 +74,16 @@ const Dashboard = ({ data }) => {
                   ).Name
                 }
               </h2>
+              <p>имеет ЗП</p>
+              <h2>
+                {`${
+                  data.find(
+                    (el) => el.Payment === counter("max", data, "Payment")
+                  ).Payment
+                } рублей`}
+              </h2>
             </li>
-            <li className="p-5 shadow-sm rounded bg-white">
+            <li className="p-5 shadow-sm rounded bg-white statistics-card">
               <p>Наименее оплачиваемая должность:</p>
               <h2>
                 {
@@ -62,9 +92,17 @@ const Dashboard = ({ data }) => {
                   ).Name
                 }
               </h2>
+              <p>имеет ЗП</p>
+              <h2>
+                {`${
+                  data.find(
+                    (el) => el.Payment === counter("min", data, "Payment")
+                  ).Payment
+                } рублей`}
+              </h2>
             </li>
           </ul>
-          <div className="p-5 shadow-sm rounded bg-white">
+          <div className="p-5 shadow-sm rounded bg-white statistics-card">
             <DonutChart width={600} height={400} data={filter(data)} />
             <ul className="sort-list">
               {options &&
@@ -88,7 +126,11 @@ const Dashboard = ({ data }) => {
                               });
                             }}
                           />
-                          {data[opt].Name}
+                          {`${data[opt].Name} ${
+                            data[opt].Amount
+                          } человек(а) (${Math.floor(
+                            (data[opt].Amount / totalAmount) * 100
+                          )}%)`}
                         </label>
                       </div>
                     </li>

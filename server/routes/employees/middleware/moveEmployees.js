@@ -43,6 +43,17 @@ const moveEmployees = (req, res) => {
                         .input("Id", mssql.Int, update.EmployeeId)
                         .input("DepId", mssql.Int, update.NewDepartment)
                         .input("JobId", mssql.Int, update.NewJob)
+                        .input(
+                          "Role",
+                          mssql.NVarChar(50),
+                          update.NewJob === "1"
+                            ? "STAFF_SPECIALIST"
+                            : update.NewJob === "2"
+                            ? "STAFF_EDITOR"
+                            : update.NewJob === "3"
+                            ? "STAFF_VACATIONS_PLANNER"
+                            : "DEFAULT"
+                        )
                         .execute("updateEmployee", (err, _) => {
                           if (!err) {
                             //

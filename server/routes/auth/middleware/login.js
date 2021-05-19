@@ -18,6 +18,7 @@ const login = (req, res) => {
               if (!err) {
                 if (result.recordset.length > 0) {
                   const role = result.recordset[0].Role;
+                  const employeeId = result.recordset[0].EmployeeId;
                   bcrypt
                     .compare(password, result.recordset[0].Password)
                     .then((result) => {
@@ -62,6 +63,7 @@ const login = (req, res) => {
                                           );
                                           res.json({
                                             role,
+                                            employeeId,
                                           });
                                         } else {
                                           errHandler(
@@ -103,6 +105,7 @@ const login = (req, res) => {
                                           );
                                           res.json({
                                             role,
+                                            employeeId,
                                           });
                                         } else {
                                           errHandler(
@@ -138,6 +141,7 @@ const login = (req, res) => {
                                         });
                                         res.json({
                                           role,
+                                          employeeId,
                                         });
                                       } else {
                                         errHandler(
@@ -175,6 +179,7 @@ const login = (req, res) => {
                                 });
                                 res.json({
                                   role,
+                                  employeeId,
                                 });
                               } else {
                                 errHandler(

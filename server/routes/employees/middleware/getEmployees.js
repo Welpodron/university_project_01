@@ -23,21 +23,18 @@ const getEmployees = (req, res) => {
           });
       } else {
         const getEmployees = new mssql.Request(connection);
-        getEmployees
-          .input("amount", mssql.Int, req.query.amount ? req.query.amount : 20)
-          .input("page", mssql.Int, req.query.page ? req.query.page : 0)
-          .execute("getEmployees", (err, result) => {
-            if (!err) {
-              res.json(result.recordset);
-            } else {
-              errHandler(
-                res,
-                500,
-                err,
-                "Произошла ошибка при обработке запроса в базе данных сервера"
-              );
-            }
-          });
+        getEmployees.execute("getEmployees", (err, result) => {
+          if (!err) {
+            res.json(result.recordset);
+          } else {
+            errHandler(
+              res,
+              500,
+              err,
+              "Произошла ошибка при обработке запроса в базе данных сервера"
+            );
+          }
+        });
       }
     })
     .catch((err) =>

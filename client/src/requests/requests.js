@@ -10,7 +10,7 @@ const OPTIONS_DELETE = {
   credentials: "include",
 };
 
-const OPTIONS_MOVE = {
+const OPTIONS_PATCH = {
   method: "PATCH",
   credentials: "include",
 };
@@ -21,6 +21,13 @@ const OPTIONS_CHECK = {
 
 const getDepartments = () =>
   fetch(`http://localhost:8080/api/departments`)
+    .then((res) => (!res.ok ? renderError(res) : res.json()))
+    .then((json) => json)
+    .catch((err) => renderError(err))
+    .catch((err) => renderError(err));
+
+const getMoveEmployeesOrderCategories = () =>
+  fetch(`http://localhost:8080/api/getMoveEmployeesOrderCategories`)
     .then((res) => (!res.ok ? renderError(res) : res.json()))
     .then((json) => json)
     .catch((err) => renderError(err))
@@ -106,7 +113,17 @@ const deleteEmployees = (data) =>
 
 const moveEmployees = (data) =>
   fetch(`http://localhost:8080/employees`, {
-    ...OPTIONS_MOVE,
+    ...OPTIONS_PATCH,
+    body: data,
+  })
+    .then((res) => (!res.ok ? renderError(res) : res.json()))
+    .then((json) => json)
+    .catch((err) => renderError(err))
+    .catch((err) => renderError(err));
+
+const updateEmployee = (data) =>
+  fetch(`http://localhost:8080/employees/update`, {
+    ...OPTIONS_PATCH,
     body: data,
   })
     .then((res) => (!res.ok ? renderError(res) : res.json()))
@@ -127,4 +144,6 @@ export {
   createVacations,
   moveEmployees,
   getVacationsTypes,
+  updateEmployee,
+  getMoveEmployeesOrderCategories,
 };

@@ -1,11 +1,19 @@
 .form-search {
-  display: grid;
-  grid-template-columns: 1fr auto auto auto;
+  display: flex;
 }
 
 .from-drop-cont {
   position: relative;
   z-index: 1;
+  margin-left: 30px !important;
+}
+
+.sort-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 5px;
 }
 
 .form-drop {
@@ -34,5 +42,5 @@
 
 .form-search-search {
   border-right: none !important;
-  max-width: 60%;
+  max-width: 40%;
 }

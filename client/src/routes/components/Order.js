@@ -1,23 +1,20 @@
 import React from "react";
 
-const Order = (props) => {
-  const { Id, Category, FirstName, LastName, MiddleName, Status } = props.data;
+import moment from "moment";
 
-  const convertDate = (date) => new Date(date);
+const Order = (props) => {
+  const { Id, Category, FirstName, LastName, MiddleName } = props.data;
 
   return (
-    <li>
+    <li className="shadow rounded p-3">
       <p>{`Номер приказа: ${Id}`}</p>
       <p>{`Категория приказа: ${Category}`}</p>
-      <p>{`Дата формирования приказа: ${convertDate(props.data["Date"])}`}</p>
-      <p>{`${LastName} ${FirstName} ${MiddleName || ""}`}</p>
-      <p>{`Текущий статус: ${Status}`}</p>
-      {Status === "Не подтвержден" && (
-        <div>
-          <button type="button">Подтвердить</button>
-          <button type="button">Отклонить</button>
-        </div>
-      )}
+      <p>{`Дата формирования приказа: ${moment(props.data["Date"]).format(
+        "DD-MM-YYYY"
+      )}`}</p>
+      <p>{`Приказ оформлен на: ${LastName} ${FirstName} ${
+        MiddleName || ""
+      }`}</p>
     </li>
   );
 };

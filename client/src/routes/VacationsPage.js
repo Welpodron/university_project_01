@@ -44,7 +44,7 @@ const VacationsPage = () => {
             <tr className="vacations-table-body-row shadow-sm p-3 bg-body rounded">
               <td className="vacations-table-cell">
                 <b>
-                  <span class="badge bg-primary">{el.Id}</span>{" "}
+                  <span className="badge bg-primary">{el.Id}</span>{" "}
                   {`${el.LastName} ${el.FirstName} ${
                     el.MiddleName ? el.MiddleName : ""
                   }`}
@@ -55,12 +55,12 @@ const VacationsPage = () => {
                 {moment(el.End).diff(moment(el.Start), "days")}
               </td>
               <td className="vacations-table-cell">
-                <span class="badge bg-warning text-dark">
+                <span className="badge bg-warning text-dark">
                   {new Date(el.Start).toLocaleDateString()}
                 </span>
               </td>
               <td className="vacations-table-cell">
-                <span class="badge bg-warning text-dark">
+                <span className="badge bg-warning text-dark">
                   {new Date(el.End).toLocaleDateString()}
                 </span>
               </td>

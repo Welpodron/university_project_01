@@ -14,19 +14,10 @@ const getOrders = (req, res) => {
             if (!err) {
               if (result.recordset.length > 0) {
                 const role = result.recordset[0].Role;
+                console.log(role);
                 if (role.includes("STAFF_")) {
                   const getOrders = new mssql.Request(connection);
                   getOrders
-                    .input(
-                      "amount",
-                      mssql.Int,
-                      req.query.amount ? req.query.amount : 20
-                    )
-                    .input(
-                      "page",
-                      mssql.Int,
-                      req.query.page ? req.query.page : 0
-                    )
                     .input("role", mssql.VarChar(50), role)
                     .execute("getOrders", (err, result) => {
                       if (!err) {

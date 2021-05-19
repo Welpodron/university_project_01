@@ -23,8 +23,70 @@ const moveEmployees = (req, res) => {
       });
       updatesArr.push(updateObj);
     });
-    console.log(updatesArr);
-    res.json({ message: "Приказы были созданы" });
+    updatesArr.forEach((update) => {
+      pool
+        .then((connection) => {
+          const setOrder = new mssql.Request(connection);
+          setOrder
+            .input("CategoryId", mssql.Int, update.MoveByOrder)
+            .execute("setOrder", (err, result) => {
+              if (!err) {
+                const orderId = result.recordset[0].Id;
+                const connectEmployeeWithOrder = new mssql.Request(connection);
+                connectEmployeeWithOrder
+                  .input("EmployeeId", mssql.Int, update.EmployeeId)
+                  .input("OrderId", mssql.Int, orderId)
+                  .execute("connectEmployeeWithOrder", (err, _) => {
+                    if (!err) {
+                      const updateEmployee = new mssql.Request(connection);
+                      updateEmployee
+                        .input("Id", mssql.Int, update.EmployeeId)
+                        .input("DepId", mssql.Int, update.NewDepartment)
+                        .input("JobId", mssql.Int, update.NewJob)
+                        .execute("updateEmployee", (err, _) => {
+                          if (!err) {
+                            //
+                          } else {
+                            errHandler(
+                              res,
+                              500,
+                              err,
+                              "Произошла ошибка при обработке запроса в базе данных сервера"
+                            );
+                          }
+                        });
+                    } else {
+                      errHandler(
+                        res,
+                        500,
+                        err,
+                        "Произошла ошибка при обработке запроса в базе данных сервера"
+                      );
+                    }
+                  });
+              } else {
+                errHandler(
+                  res,
+                  500,
+                  err,
+                  "Произошла ошибка при обработке запроса в базе данных сервера"
+                );
+              }
+            });
+        })
+        .catch((err) =>
+          errHandler(
+            res,
+            500,
+            err,
+            "Произошла ошибка при подключении к базе данных сервера"
+          )
+        );
+    });
+    res.json({
+      message:
+        "Приказы были успешно созданы и сотрудники перемещены на новые позиции",
+    });
   } else {
     errHandler(
       res,

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import {
   tryToFind,
@@ -10,7 +10,13 @@ import moment from "moment";
 
 import "./styles/CreateVacation.css";
 
+import renderError from "../components/errors/renderError";
+
+import userContext from "../context/user";
+import { check } from "../requests/auth";
+
 const CreateVacation = () => {
+  const [user, setUser] = useContext(userContext);
   const [search, setSearch] = useState("");
   const [options, setOptions] = useState([]);
   const [exact, setExact] = useState(false);
@@ -19,6 +25,19 @@ const CreateVacation = () => {
   const [vacationsTypes, setVacationsTypes] = useState([]);
 
   useEffect(() => {
+    check()
+      .then((d) => {
+        d ? setUser({ role: d.role }) : setUser({ role: "GUEST" });
+      })
+      .catch((err) => renderError(err));
+
+    if (
+      user.role !== "STAFF_SPECIALIST" &&
+      user.role !== "STAFF_VACATIONS_PLANNER"
+    ) {
+      window.location.href = "http://localhost:3000/login";
+      return;
+    }
     getVacationsTypes().then((d) => setVacationsTypes(d));
   }, []);
 
@@ -217,173 +236,177 @@ const CreateVacation = () => {
 
   return (
     <>
-      {options && (
-        <div className="form-page">
-          <div className="bg-light form-search-left">
-            <div>
+      {options &&
+        (user.role === "STAFF_SPECIALIST" ||
+          user.role === "STAFF_VACATIONS_PLANNER") && (
+          <div className="form-page">
+            <div className="bg-light form-search-left">
               <div>
-                <input
-                  className="form-control my-5"
-                  type="search"
-                  value={search}
-                  onInput={handleInput}
-                />
+                <div>
+                  <input
+                    className="form-control my-5"
+                    type="search"
+                    value={search}
+                    onInput={handleInput}
+                  />
+                </div>
+                <div className="form-check form-switch">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    checked={exact}
+                    onChange={() => setExact((prev) => !prev)}
+                  />
+                  <label className="form-check-label">
+                    Искать сотрудника строго по табельному номеру
+                  </label>
+                </div>
               </div>
-              <div className="form-check form-switch">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  checked={exact}
-                  onChange={() => setExact((prev) => !prev)}
-                />
-                <label className="form-check-label">
-                  Искать сотрудника строго по табельному номеру
-                </label>
-              </div>
-            </div>
-            {options.length > 0 && (
-              <div>
-                <h2 className="my-5">Найденные сотрудники:</h2>
-              </div>
-            )}
-            <ul className="found-list">
-              {options.map((option) => (
-                <li>
-                  <button
-                    key={option.Id}
-                    value={option.Id}
-                    onClick={handleClick}
-                    className="btn btn-primary"
-                    type="button"
-                  >
-                    {option.Id}: {option.LastName}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-          {checked && checked.length > 0 && (
-            <form className="form" onSubmit={handleSubmit}>
-              <div className="my-5">
-                {checked && checked.length > 0 && (
-                  <div>
-                    <h2 className="my-5">Выбранные сотрудники:</h2>
-                    <ul className="grid-list">
-                      {checked.map((el) => (
-                        <li
-                          className="grid-item bg-primary text-white"
-                          key={el.Id}
-                        >
-                          {el.LastName}
-                          <button
-                            value={el.Id}
-                            type="button"
-                            onClick={removeChecked}
-                            className="btn-close btn-close-white"
-                          ></button>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
-              {checked.map((el) => (
-                <section key={el.Id}>
-                  <header className="my-5">
-                    <h3>
-                      {`${el.LastName} ${el.FirstName} ${
-                        el.MiddleName ? el.MiddleName : ""
-                      } `}
-                      <span class="badge bg-primary rounded-pill">{el.Id}</span>
-                    </h3>
-                  </header>
-                  <div className="mb-2">
-                    <label className="form-label">Категория отпуска:</label>
-                    <select
-                      className="form-select"
-                      id={`Category_${el.Id}`}
-                      name={`Category_${el.Id}`}
-                      value={el.Category}
-                      onChange={handleChange}
-                      required
+              {options.length > 0 && (
+                <div>
+                  <h2 className="my-5">Найденные сотрудники:</h2>
+                </div>
+              )}
+              <ul className="found-list">
+                {options.map((option) => (
+                  <li>
+                    <button
+                      key={option.Id}
+                      value={option.Id}
+                      onClick={handleClick}
+                      className="btn btn-primary"
+                      type="button"
                     >
-                      {vacationsTypes.length > 0 &&
-                        vacationsTypes
-                          .filter((vacationType) =>
-                            vacationType.Id === 4 && el.Gender === "М"
-                              ? false
-                              : true
-                          )
-                          .map((vacationType) => (
-                            <option value={vacationType.Id}>
-                              {vacationType.Name}
-                            </option>
-                          ))}
-                    </select>
-                  </div>
-                  <div className="mb-2">
-                    <label className="form-label">Количество дней:</label>
-                    <input
-                      min="1"
-                      className="form-control"
-                      type="number"
-                      required
-                      id={`Amount_${el.Id}`}
-                      name={`Amount_${el.Id}`}
-                      value={el.Amount}
-                      onChange={handleChange}
-                      readOnly={
-                        el.Category === "1" || el.Category === "4"
-                          ? true
-                          : false
-                      }
-                      disabled={
-                        el.Category === "1" || el.Category === "4"
-                          ? true
-                          : false
-                      }
-                    />
-                  </div>
-                  <div className="form-col-2">
+                      {option.Id}: {option.LastName}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            {checked && checked.length > 0 && (
+              <form className="form" onSubmit={handleSubmit}>
+                <div className="my-5">
+                  {checked && checked.length > 0 && (
+                    <div>
+                      <h2 className="my-5">Выбранные сотрудники:</h2>
+                      <ul className="grid-list">
+                        {checked.map((el) => (
+                          <li
+                            className="grid-item bg-primary text-white"
+                            key={el.Id}
+                          >
+                            {el.LastName}
+                            <button
+                              value={el.Id}
+                              type="button"
+                              onClick={removeChecked}
+                              className="btn-close btn-close-white"
+                            ></button>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+                {checked.map((el) => (
+                  <section key={el.Id}>
+                    <header className="my-5">
+                      <h3>
+                        {`${el.LastName} ${el.FirstName} ${
+                          el.MiddleName ? el.MiddleName : ""
+                        } `}
+                        <span className="badge bg-primary rounded-pill">
+                          {el.Id}
+                        </span>
+                      </h3>
+                    </header>
                     <div className="mb-2">
-                      <label className="form-label">Дата начала:</label>
-                      <input
-                        className="form-control"
-                        type="date"
-                        id={`Start_${el.Id}`}
-                        name={`Start_${el.Id}`}
-                        value={el.Start}
-                        min={moment().format("YYYY-MM-DD")}
+                      <label className="form-label">Категория отпуска:</label>
+                      <select
+                        className="form-select"
+                        id={`Category_${el.Id}`}
+                        name={`Category_${el.Id}`}
+                        value={el.Category}
                         onChange={handleChange}
                         required
-                      />
+                      >
+                        {vacationsTypes.length > 0 &&
+                          vacationsTypes
+                            .filter((vacationType) =>
+                              vacationType.Id === 4 && el.Gender === "М"
+                                ? false
+                                : true
+                            )
+                            .map((vacationType) => (
+                              <option value={vacationType.Id}>
+                                {vacationType.Name}
+                              </option>
+                            ))}
+                      </select>
                     </div>
                     <div className="mb-2">
-                      <label className="form-label">Дата окончания:</label>
+                      <label className="form-label">Количество дней:</label>
                       <input
-                        type="date"
+                        min="1"
                         className="form-control"
-                        id={`End_${el.Id}`}
-                        name={`End_${el.Id}`}
-                        value={el.End}
-                        min={moment().add(1, "days").format("YYYY-MM-DD")}
+                        type="number"
                         required
-                        readOnly
-                        disabled
+                        id={`Amount_${el.Id}`}
+                        name={`Amount_${el.Id}`}
+                        value={el.Amount}
+                        onChange={handleChange}
+                        readOnly={
+                          el.Category === "1" || el.Category === "4"
+                            ? true
+                            : false
+                        }
+                        disabled={
+                          el.Category === "1" || el.Category === "4"
+                            ? true
+                            : false
+                        }
                       />
                     </div>
-                  </div>
-                  <hr className="my-5"></hr>
-                </section>
-              ))}
-              <button className="btn btn-danger" type="submit">
-                Создать приказ о создании отпуска для выбранного(ых)
-                сотрудника(ов), а также добавить отпуска в таблицу отпусков
-              </button>
-            </form>
-          )}
-        </div>
-      )}
+                    <div className="form-col-2">
+                      <div className="mb-2">
+                        <label className="form-label">Дата начала:</label>
+                        <input
+                          className="form-control"
+                          type="date"
+                          id={`Start_${el.Id}`}
+                          name={`Start_${el.Id}`}
+                          value={el.Start}
+                          min={moment().format("YYYY-MM-DD")}
+                          onChange={handleChange}
+                          required
+                        />
+                      </div>
+                      <div className="mb-2">
+                        <label className="form-label">Дата окончания:</label>
+                        <input
+                          type="date"
+                          className="form-control"
+                          id={`End_${el.Id}`}
+                          name={`End_${el.Id}`}
+                          value={el.End}
+                          min={moment().add(1, "days").format("YYYY-MM-DD")}
+                          required
+                          readOnly
+                          disabled
+                        />
+                      </div>
+                    </div>
+                    <hr className="my-5"></hr>
+                  </section>
+                ))}
+                <button className="btn btn-danger" type="submit">
+                  Создать приказ о создании отпуска для выбранного(ых)
+                  сотрудника(ов), а также добавить отпуска в таблицу отпусков
+                </button>
+              </form>
+            )}
+          </div>
+        )}
     </>
   );
 };

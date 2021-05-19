@@ -3,6 +3,7 @@ const mssql = require("mssql");
 const pool = require("../../../database/db");
 const errHandler = require("../../../helpers/errors");
 
+const moment = require("moment");
 //TO DO: Внимание! отсуствует проверка на истечение куки!
 
 const check = (req, res) => {
@@ -16,9 +17,19 @@ const check = (req, res) => {
           .execute("getSession", (err, result) => {
             if (!err) {
               if (result.recordset.length > 0) {
-                res.json({
-                  role: result.recordset[0].Role,
-                });
+                // проверить истекла ли она
+                if (moment().isBefore(moment(result.recordset[0].Expires))) {
+                  console.log("yes??");
+                  res.json({
+                    role: result.recordset[0].Role,
+                    employeeId: result.recordset[0].EmployeeId,
+                  });
+                } else {
+                  res.json({
+                    role: "GUEST",
+                    employeeId: -1,
+                  });
+                }
               } else {
                 errHandler(
                   res,

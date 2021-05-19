@@ -1,22 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-
 import Login from "./components/auth/Login";
 import EmployeesPage from "./routes/EmployeesPage";
 import OrdersPage from "./routes/OrdersPage";
 import StatisticsPage from "./routes/StatisticsPage";
 import VacationsPage from "./routes/VacationsPage";
 import CreateVacation from "./routes/CreateVacation";
-
+import CreateEmployee from "./components/employees/CreateEmployee";
 import MoveEmployeePage from "./routes/MoveEmployeePage";
-
 import renderError from "./components/errors/renderError";
-
 import userContext from "./context/user";
-
 import { check } from "./requests/auth";
 import EmployeePage from "./routes/EmployeePage";
-
 import DeleteEmployee from "./routes/DeleteEmployee";
 
 function App() {
@@ -25,24 +20,12 @@ function App() {
   useEffect(() => {
     check()
       .then((d) => {
-        d ? setUser({ role: d.role }) : setUser({ role: "GUEST" });
+        d
+          ? setUser({ role: d.role, employeeId: d.employeeId })
+          : setUser({ role: "GUEST", employeeId: -1 });
       })
       .catch((err) => renderError(err));
   }, []);
-
-  /*
-
-  <div className="offcanvas offcanvas-start" data-bs-scroll="true" tabIndex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
-    <div className="offcanvas-header">
-      <h5 className="offcanvas-title" id="offcanvasWithBothOptionsLabel">Backdroped with scrolling</h5>
-      <button type="button" className="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div className="offcanvas-body">
-      <p>Try scrolling the rest of the page to see this option in action.</p>
-    </div>
-  </div>
-
-  */
 
   return (
     <>
@@ -61,11 +44,11 @@ function App() {
                 width="25"
                 height="25"
                 fill="currentColor"
-                class="bi bi-list"
+                className="bi bi-list"
                 viewBox="0 0 16 16"
               >
                 <path
-                  fill-rule="evenodd"
+                  fillRule="evenodd"
                   d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"
                 />
               </svg>
@@ -86,48 +69,96 @@ function App() {
                 ></button>
               </div>
               <div className="offcanvas-body">
-                <ul className="menu-list">
-                  <li className="nav-item">
-                    <Link className="btn btn-primary" to="/employees">
-                      Сотрудники
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="btn btn-primary" to="/orders">
-                      Приказы
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="btn btn-primary" to="/statistics">
-                      Статистика
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="btn btn-primary" to="/login">
-                      Логин
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="btn btn-primary" to="/vacations">
-                      Таблица отпусков
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="btn btn-primary" to="/createVacation">
-                      Создать отпуск
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="btn btn-primary" to="/test">
-                      Увольнение сотрудников
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="btn btn-primary" to="/moveEmployee">
-                      Переместить сотрудников
-                    </Link>
-                  </li>
-                </ul>
+                <div className="mb-3">
+                  <h2>Общая информация</h2>
+                  <ul className="menu-list">
+                    <li className="nav-item">
+                      <Link className="btn btn-primary" to="/employees">
+                        Сотрудники
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link className="btn btn-primary" to="/vacations">
+                        Таблица отпусков
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link className="btn btn-primary" to="/statistics">
+                        Статистика
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+                {(user.role === "STAFF_SPECIALIST" ||
+                  user.role === "STAFF_EDITOR") && (
+                  <div className="mb-3">
+                    <h2>Управление персоналом</h2>
+                    <ul className="menu-list">
+                      <li className="nav-item">
+                        <Link className="btn btn-primary" to="/createEmployee">
+                          Добавить сотрудника
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link className="btn btn-primary" to="/deleteEmployee">
+                          Уволить сотрудников
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link className="btn btn-primary" to="/moveEmployee">
+                          Переместить сотрудников
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+                )}
+                {user.role.includes("STAFF_") && (
+                  <div className="mb-3">
+                    <h2>Приказы организации</h2>
+                    <ul className="menu-list">
+                      <li className="nav-item">
+                        <Link className="btn btn-primary" to="/orders">
+                          Приказы
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+                )}
+                {(user.role === "STAFF_SPECIALIST" ||
+                  user.role === "STAFF_VACATIONS_PLANNER") && (
+                  <div className="mb-3">
+                    <h2>Управление отпусками</h2>
+                    <ul className="menu-list">
+                      <li className="nav-item">
+                        <Link className="btn btn-primary" to="/createVacation">
+                          Создать отпуск
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+                )}
+                {user.role !== "GUEST" && (
+                  <div className="mb-3">
+                    <ul className="menu-list">
+                      <li className="nav-item">
+                        <Link className="btn btn-primary" to="/login">
+                          Сменить пользователя
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+                )}
+                {user.role === "GUEST" && (
+                  <div className="mb-3">
+                    <ul className="menu-list">
+                      <li className="nav-item">
+                        <Link className="btn btn-primary" to="/login">
+                          Войти в систему
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+                )}
               </div>
             </div>
             <Switch>
@@ -143,7 +174,10 @@ function App() {
               <Route path="/login">
                 <Login />
               </Route>
-              <Route path="/test">
+              <Route path="/createEmployee">
+                <CreateEmployee />
+              </Route>
+              <Route path="/deleteEmployee">
                 <DeleteEmployee />
               </Route>
               <Route path="/createVacation">

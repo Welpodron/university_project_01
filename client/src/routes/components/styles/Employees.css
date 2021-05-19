@@ -6,6 +6,27 @@
   gap: 50px;
 }
 
+.menu-opener {
+  display: grid;
+  place-items: center;
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 50% !important;
+  position: fixed;
+  left: 10px;
+  top: 10px;
+  z-index: 10;
+}
+
+.menu-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+
 .employees-list a {
   display: grid;
   text-decoration: none;

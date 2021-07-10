@@ -1,7 +1,6 @@
 const mssql = require("mssql");
 const pool = require("../../../database/db");
 const errHandler = require("../../../helpers/errors");
-
 const getEmployees = (req, res) => {
   pool
     .then((connection) => {

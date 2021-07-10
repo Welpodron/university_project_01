@@ -4,8 +4,6 @@ const errHandler = require("../../../helpers/errors");
 
 const moveEmployees = (req, res) => {
   if (req.body) {
-    // Нужно проверить права пользователя
-    // Очистить сессии и удалить логин и пароль для входа
     const objArr = Object.entries(req.body);
     const employeesIds = new Set();
     objArr.forEach((obj) => {

@@ -1,7 +1,6 @@
 const mssql = require("mssql");
 const pool = require("../../../database/db");
 const errHandler = require("../../../helpers/errors");
-
 const getStatistics = (req, res) => {
   pool
     .then((connection) => {
@@ -28,5 +27,4 @@ const getStatistics = (req, res) => {
       )
     );
 };
-
 module.exports = getStatistics;

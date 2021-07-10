@@ -49,7 +49,6 @@ const EmployeesPage = () => {
           el[field].toString().toLowerCase().indexOf(q.toLowerCase()) > -1
       )
     );
-    // Проводим сортировку если она нужна
     return sortOptionsActive.length > 0
       ? multipleSort(temp, sortOptionsActive)
       : temp;

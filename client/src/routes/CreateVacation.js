@@ -227,6 +227,7 @@ const CreateVacation = () => {
         console.log(d);
         renderError("Отпуска созданы");
         setChecked([]);
+        setOptions([]);
       })
       .catch();
   };

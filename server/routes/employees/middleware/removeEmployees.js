@@ -4,8 +4,6 @@ const errHandler = require("../../../helpers/errors");
 
 const removeEmployees = (req, res) => {
   if (req.body) {
-    // Нужно проверить права пользователя
-    // Очистить сессии и удалить логин и пароль для входа
     const objArr = Object.entries(req.body);
     objArr.forEach((arr) => {
       const employeeId = arr[0].split("_")[1];

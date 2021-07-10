@@ -69,26 +69,28 @@ function App() {
                 ></button>
               </div>
               <div className="offcanvas-body">
-                <div className="mb-3">
-                  <h2>Общая информация</h2>
-                  <ul className="menu-list">
-                    <li className="nav-item">
-                      <Link className="btn btn-primary" to="/employees">
-                        Сотрудники
-                      </Link>
-                    </li>
-                    <li className="nav-item">
-                      <Link className="btn btn-primary" to="/vacations">
-                        Таблица отпусков
-                      </Link>
-                    </li>
-                    <li className="nav-item">
-                      <Link className="btn btn-primary" to="/statistics">
-                        Статистика
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
+                {user.role !== "GUEST" && (
+                  <div className="mb-3">
+                    <h2>Общая информация</h2>
+                    <ul className="menu-list">
+                      <li className="nav-item">
+                        <Link className="btn btn-primary" to="/employees">
+                          Сотрудники
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link className="btn btn-primary" to="/vacations">
+                          Таблица отпусков
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link className="btn btn-primary" to="/statistics">
+                          Статистика
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+                )}
                 {(user.role === "STAFF_SPECIALIST" ||
                   user.role === "STAFF_EDITOR") && (
                   <div className="mb-3">

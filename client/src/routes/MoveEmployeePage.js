@@ -125,6 +125,7 @@ const MoveEmployees = () => {
         console.log(d);
         renderError("Сотрудники успешно переведены");
         setChecked([]);
+        setOptions([]);
       })
       .catch();
   };

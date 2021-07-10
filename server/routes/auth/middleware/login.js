@@ -23,8 +23,6 @@ const login = (req, res) => {
                     .compare(password, result.recordset[0].Password)
                     .then((result) => {
                       if (result) {
-                        // ПОЛНОСТЬЮ ЗАБЫЛ ТО ЧТО ВДРУГ ПОЛЬЗОВАТЕЛЬ ОТПРАВИЛ ИСТЕКШУЮ КУКУ
-                        // Проверить пришел ли пользователь уже с существующей кукой ВНИМАНИЕ НУЖНО ТАКЖЕ ПРОВЕРИТЬ КУКУ НА ВАЛИДНОСТЬ!!!!
                         if (req.cookies.sessionId) {
                           const { sessionId } = req.cookies;
                           const getSession = new mssql.Request(connection);
@@ -34,7 +32,6 @@ const login = (req, res) => {
                               if (!err) {
                                 if (result.recordset.length > 0) {
                                   if (result.recordset[0].Login === login) {
-                                    // Продлить сессию и выдать новый токен
                                     const updateSession = new mssql.Request(
                                       connection
                                     );
@@ -75,7 +72,6 @@ const login = (req, res) => {
                                         }
                                       });
                                   } else {
-                                    // Сменить пользователя
                                     const updateSession = new mssql.Request(
                                       connection
                                     );
@@ -118,10 +114,6 @@ const login = (req, res) => {
                                       });
                                   }
                                 } else {
-                                  /* 
-                                                    Куки пользователя не был найден (возможная ситуация - Таблица сессий была очищена)
-                                                    Желательно проверять данные ситуации на потенциально поддельные пользователем куки
-                                                */
                                   const setSession = new mssql.Request(
                                     connection
                                   );

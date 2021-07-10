@@ -56,7 +56,6 @@ const setEmployee = (req, res) => {
             if (!err) {
               const employeeId = result.recordset[0].Id;
               const setOrder = new mssql.Request(connection);
-              // ИЗМЕНИТЬ!
               setOrder
                 .input("CategoryId", mssql.Int, 1)
                 .execute("setOrder", (err, result) => {

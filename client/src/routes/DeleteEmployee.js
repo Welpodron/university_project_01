@@ -88,6 +88,7 @@ const DeleteEmployee = () => {
         console.log(d);
         renderError("Сотрудники успешно уволены");
         setChecked([]);
+        setOptions([]);
       })
       .catch();
   };
